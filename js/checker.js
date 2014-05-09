@@ -44,19 +44,23 @@ window.fbAsyncInit = function(){
 
     // 1. 讓使用者登入此 Facebook App (FB.login)
       FB.login(function(){
-        console.log("login");
+        console.log("logged in!");
+
         // 2. 以 FB.api 拿到使用者的 group 列表
         FB.api('/me/groups',function(resp){
           console.log('User groups:',resp.data);
-        });        
-        // 拿到使用者 group 列表的 response 之後：
-        for (var i = 0; i < resp.data.length; i++) {
-          group = resp.data[i];
-          if( junkGroups.indexOf(group.id) !== -1 ){
+
+          var group;
+          for (var i = 0; i < resp.data.length; i++) {
+            group = resp.data[i];
+            if( junkGroups.indexOf(group.id) !== -1 ){
             results.append('<tr><td>'+group.id+'</td><td>'+group.name+'</td></tr>')
+            }
           }
-        }
-        results.after('<div class="hw4-complete alert alert-info">掃描完成</div>');      
+          // 拿到使用者 group 列表的 response 之後：        
+          results.after('<div class="hw4-complete alert alert-info">掃描完成</div>');      
+        });        
+        
       }, {scope: 'user_groups'});    
   });
 };
